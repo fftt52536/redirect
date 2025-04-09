@@ -1,0 +1,250 @@
+html, body{
+    margin: 0;
+    width: 100%;
+    height: 100%;
+}
+.ct{
+    position: relative;
+    width: 100%;
+    height: 100%;
+    overflow: inherit;
+    background-color: #eeeeee;
+    font-size: 80%;
+    font-family: Consolas, "Courier New", Courier, "微软雅黑", "Microsoft Yahei", "黑体", SimHei, monospace;
+    cursor: grab;
+}
+.ct:active{
+    cursor: move;
+    cursor: grabbing;
+}
+.ct .tree{
+    position: relative;
+    user-select: none;
+    padding: 6px;
+    min-width: 40px;
+    min-height: 20px;
+    background-color: #00000008;
+}
+.ct .tree:not([data-fixed="true"]){
+    position: absolute;
+    left: 0;
+    top: 0;
+    transform: translate3d(0, 0, 0);
+}
+.ct .tree[data-fixed="true"]{
+    margin-top: 5px;
+    background-color: #eeeeeeaa;
+    margin-left: -2px;
+    padding-right: 0;
+    left: 28px;
+    /*border-radius: 0 20px 20px 0;*/
+}
+.ct .tree[data-fixed="true"]::after{
+    content: "";
+    display: block;
+    clear: both;
+}
+.ct .tree .folder{
+    --color: #000000;
+    cursor: pointer;
+    position: absolute;
+    left: 2px;
+    top: 2px;
+    width: 0;
+    height: 0;
+    box-sizing: content-box;
+    padding: 0;
+    margin: 0;
+    border-radius: 0;
+    outline: none;
+    overflow: hidden;
+    border: 5px solid transparent;
+    border-left-color: var(--color);
+    appearance: none;
+    -webkit-appearance: none;
+}
+.ct .tree .folder:checked{
+    border-left-color: transparent;
+    --color: #cccccc;
+    border-top-color: var(--color);
+}
+
+.ct .tree .folder:hover{
+    --color: #66ccff;
+    transform: scale(3);
+}
+
+.ct .tree .folder:not(:checked)~.wrap{
+    display: none;
+}
+
+.ct .block{
+    display: block;
+    z-index: 100;
+    position: relative;
+    padding-left: 5px;
+    background-color: rgb(204, 204, 204, 0.8);
+    color: #ffffff;
+    border: 3px solid #00000011;
+    margin: 0.7px;
+    padding-right: 20px;
+    border-radius: 0 12px 12px 0;
+    line-height: 28px;
+    float: left;
+    clear: left;
+}
+
+.ct .block.reporter{
+    padding-right: 5px;
+    border-radius: 8px;
+}
+
+.ct .block *{
+    vertical-align: middle;
+}
+
+.ct .clearRight{
+    padding-right: 0;
+    border-radius: 0 10px 10px 0;
+    border-right: none;
+}
+
+.ct .block[data-hidden="true"]{
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.ct .light::after{
+    content: "";
+    display: block;
+    position: absolute;
+    left: 0;
+    right: 0;
+    height: 5px;
+    background-color: #ffffff;
+}
+
+.ct .light:not(.light-top)::after{
+    bottom: 0;
+}
+.ct .light.light-top::after{
+    top: 0;
+}
+
+
+.ct .tree.hover{
+    background-color: #00000011;
+}
+.ct .tree.hover .block{
+    box-shadow: 1px 1px 5px #000000;
+}
+
+.ct .input{
+    position: relative;
+    display: inline-block;
+    min-width: 35px;
+    min-height: 20px;
+    background-color: #00000055;
+    margin: 5px;
+    border-radius: 8px;
+    /*overflow: hidden;*/
+}
+
+.ct .input.light-input{
+    outline: 5px solid #00000022;
+}
+
+.ct .input .textInput{
+    position: absolute;
+    display: block;
+    width: auto;
+    height: auto;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    border: none;
+    outline: none;
+    background-color: #ffffff;
+    text-align: center;
+    border-radius: inherit;
+    transition: all 0.2s linear;
+}
+
+.ct .input .textInput:hover{
+    background-color: #eeeeee;
+}
+
+.ct .input .textInput:active{
+    background-color: #eeeeee66;
+}
+
+.ct .input .textInput:focus{
+    /*width: 50px;*/
+    outline: 5px solid #00000022;
+    background-color: #eeeeeeaa;
+}
+
+.ct .input .textInput:disabled{
+    color: #66666688;
+}
+
+.ct .input .blockInput{
+    background-color: #ffffff;
+    position: relative;
+}
+.ct .input .blockInput::after{
+    content: "";
+    display: block;
+    clear: both;
+}
+/*
+.ct [data-hidden="true"] .textInput{
+    display: none;
+}
+*/
+
+.ct [data-hidden="true"] .input{
+    background-color: #ffffff30;
+}
+
+.ct .tree.light-in{
+    background-color: #00000050;
+}
+
+.ct::before{
+    content: "";
+    display: block;
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 250px;
+    background-color: #00000008;
+    border-right: 1px solid #00000020;
+    transition: all 0.5s linear;
+}
+
+.ct.shadow::before{
+    background-color: #00000088;
+}
+
+
+
+
+/* Define Block Colors */
+.ct .block[data-opcode ^= "motion_"]{
+    background-color: rgb(0, 170, 255, 0.8);
+}
+.ct .block[data-opcode ^= "looks_"]{
+    background-color: rgb(166, 12, 255, 0.8);
+}
+.ct .block[data-opcode ^= "controls_"]{
+    background-color: rgb(255, 166, 12, 0.8);
+}
+.ct .block[data-opcode ^= "variables_"]{
+    background-color: rgba(255, 85, 0, 0.8);
+}
+.ct .block[data-opcode ^= "operator_"]{
+    background-color: rgba(0, 186, 0, 0.8);
+}

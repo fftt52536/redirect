@@ -1,0 +1,194 @@
+[
+    {
+        "inputs": [
+            {
+                "opcode": "operator_times",
+                "inputs": [
+                    "",
+                    ""
+                ]
+            }
+        ],
+        "x": 412.804,
+        "y": 15.8356
+    },
+    {
+        "inputs": [
+            {
+                "opcode": "operator_greater",
+                "inputs": [
+                    "",
+                    ""
+                ]
+            }
+        ],
+        "x": 411.108,
+        "y": 2.907449999999997
+    },
+    {
+        "inputs": [
+            {
+                "opcode": "operator_equal",
+                "inputs": [
+                    "",
+                    ""
+                ]
+            }
+        ],
+        "x": 400.861,
+        "y": 32.72970000000001
+    },
+    {
+        "inputs": [
+            {
+                "opcode": "looks_output",
+                "inputs": [
+                    {
+                        "opcode": "operator_divide",
+                        "inputs": [
+                            "",
+                            ""
+                        ]
+                    }
+                ]
+            },
+            {
+                "opcode": "controls_whileNot",
+                "inputs": [
+                    {
+                        "opcode": "looks_input",
+                        "inputs": [
+                            {
+                                "opcode": "operator_minus",
+                                "inputs": [
+                                    "",
+                                    ""
+                                ]
+                            }
+                        ]
+                    },
+                    []
+                ]
+            },
+            {
+                "opcode": "controls_repeat",
+                "inputs": [
+                    "",
+                    [
+                        {
+                            "opcode": "variables_set",
+                            "inputs": [
+                                "",
+                                {
+                                    "opcode": "variables_custom",
+                                    "inputs": []
+                                }
+                            ]
+                        },
+                        {
+                            "opcode": "variables_incr",
+                            "inputs": [
+                                "",
+                                {
+                                    "opcode": "operator_less",
+                                    "inputs": [
+                                        "",
+                                        ""
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                ]
+            }
+        ],
+        "x": 859.29,
+        "y": 36.587999999999994
+    },
+    {
+        "inputs": [
+            {
+                "opcode": "looks_output",
+                "inputs": [
+                    {
+                        "opcode": "operator_divide",
+                        "inputs": [
+                            "",
+                            {
+                                "opcode": "operator_add",
+                                "inputs": [
+                                    "1",
+                                    "1"
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "opcode": "controls_whileNot",
+                "inputs": [
+                    {
+                        "opcode": "looks_input",
+                        "inputs": [
+                            {
+                                "opcode": "operator_minus",
+                                "inputs": [
+                                    "",
+                                    ""
+                                ]
+                            }
+                        ]
+                    },
+                    []
+                ]
+            },
+            {
+                "opcode": "controls_repeat",
+                "inputs": [
+                    "",
+                    [
+                        {
+                            "opcode": "variables_set",
+                            "inputs": [
+                                "",
+                                {
+                                    "opcode": "variables_custom",
+                                    "inputs": []
+                                }
+                            ]
+                        },
+                        {
+                            "opcode": "variables_incr",
+                            "inputs": [
+                                "",
+                                {
+                                    "opcode": "operator_less",
+                                    "inputs": [
+                                        "",
+                                        ""
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                ]
+            }
+        ],
+        "x": 496.28999999999996,
+        "y": 97.588
+    },
+    {
+        "inputs": [
+            {
+                "opcode": "operator_add",
+                "inputs": [
+                    "1",
+                    "1"
+                ]
+            }
+        ],
+        "x": 351.29,
+        "y": 177.58799999999997
+    }
+]

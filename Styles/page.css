@@ -1,0 +1,50 @@
+html, body{
+    margin: 0;
+    padding: 0;
+}
+
+.clearfix{
+    zoom: 1;
+}
+
+.clearfix::after{
+    content: "";
+    display: block;
+    float: left;
+    clear: both;
+}
+
+.footer{
+    width: 100%;
+    min-width: none;
+    height: 300px;
+    position: relative;
+    background-image: linear-gradient(to bottom, #8decef, #7984fe);
+    margin-top: 500px;
+}
+
+.footer .menu{
+    float: left;
+    color: #ffffff;
+    padding: 30px;
+    line-height: 25px;
+}
+
+.footer h3{
+    font-size: 25px;
+    font-weight: normal;
+    margin: 0;
+    padding: 0;
+    line-height: 40px;
+}
+
+.footer .menu .links, .footer .menu .links>li{
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.footer .menu .links>li>a{
+    text-decoration: none;
+    color: inherit;
+}

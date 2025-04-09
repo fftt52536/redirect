@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>抠图</title>
+    <style>
+        html{
+            user-select: none;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+        }
+        .wrap{
+            position: relative;
+            width: 600px;
+            height: 400px;
+        }
+        .wrap *{
+            width: 100%;
+            height: 100%;
+        }
+        #file{
+            display: none;
+        }
+        .wrap{
+            display: inline-block;
+        }
+        .hide{
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <h3>抠图</h3>
+    <p><a href="/">主页</a>|抠图|<a href="color.html">图像换色</a></p>
+    <div class="form">
+        <input type="file" id="file" />
+        <button type="button" id="select">选择文件</button>
+        <button type="button" id="save">保存图片</button>
+    </div>
+    <div class="form wrap hide">
+        <img id="resource" src="" draggable="false"/>
+    </div>
+    <div class="form wrap">
+        <canvas id="output" width="600" height="400"></canvas>
+        <canvas id="mask" width="600" height="400" style="position: absolute; left: 0; top: 0;"></canvas>
+    </div>
+    <script>
+        var canvas = document.getElementById("output"),
+            resource = document.getElementById("resource"),
+            file = document.getElementById("file"),
+            select = document.getElementById("select"),
+            save = document.getElementById("save"),
+            cut_list = [],
+            mask = document.getElementById("mask"),
+            moving = false;
+        class Pos{
+            constructor(...axis){
+                if(axis.length < 2) throw new Error("Param Error While Constructing Pos("+axis.join(",")+"): Params too few");
+                this._x = axis[0];
+                this._y = axis[1];
+                this._z = (axis[2] || axis[2] === 0) ? axis[2] : null;
+            }
+            add(...axis){
+                if(axis.length < 2) throw new Error("Param Error While Calculating Pos.add("+axis.join(",")+"): Params too few");
+                this._x += axis[0];
+                this._y += axis[1];
+                if(this._z || this._z === 0)
+                    if(axis[2]) this._z += axis[2];
+                else this._z = (axis[2] || axis[2] === 0) ? axis[2] : null;
+                return this;
+            }
+            get x(){
+                return this._x;
+            }
+            get y(){
+                return this._y;
+            }
+            get z(){
+                return this._z;
+            }
+        }
+        var c = canvas.getContext("2d", {willReadFrequently: true});
+        var p = mask.getContext("2d");
+        //var m = mask.getContext("2d");
+        function cut(){
+            c.restore();
+            c.clearRect(0, 0, canvas.width, canvas.height);
+            console.log(canvas.width);
+            //c.drawImage(resource,0,0, canvas.width, canvas.height);
+            if(cut_list.length <= 0) return;
+            c.beginPath();
+            c.moveTo(...cut_list.pop());
+            cut_list.forEach(function(p){
+                c.lineTo(...p);
+            });
+            c.closePath();
+            c.clip();
+            c.drawImage(resource,0,0, canvas.width, canvas.height);
+            cut_list = [];
+        }
+        function fresh(){
+            p.clearRect(0, 0, canvas.width, canvas.height);
+            
+            if(cut_list.length <= 0) return;
+            p.beginPath();
+            p.moveTo(...cut_list[0]);
+            cut_list.forEach(function(ps, i){
+                if(i === 0) return;
+                p.lineTo(...ps);
+            });
+            p.closePath();
+            p.fillStyle = "#66ccff66";
+            p.lineWidth = 2;
+            p.strokeStyle = "#00000066";
+            p.fill();
+            p.stroke();
+        }
+        function offset(elem){
+            if(elem.offsetParent) return offset(elem.offsetParent).add(elem.offsetLeft, elem.offsetTop);
+            return new Pos(elem.offsetLeft, elem.offsetTop);
+        }
+        resource.addEventListener("load", function(){
+            c.clearRect(0, 0, canvas.width, canvas.height);
+            p.clearRect(0, 0, mask.width, mask.height);
+            cut_list = [];
+            c.restore();
+            c.drawImage(resource,0,0, canvas.width, canvas.height);
+            c.restore();
+            c.save();
+            if(resource.src) window.URL.revokeObjectURL(resource.src);
+        });
+        file.addEventListener("change", function(){
+            if(file.files && file.files.length > 0){
+                var blob = file.files[0];
+                resource.src = window.URL.createObjectURL(blob);
+                file.value = '';
+                select.style.visibility = "hidden";
+            }
+        });
+        select.addEventListener("click", function(){
+            file.click();
+        });
+        save.addEventListener("click", function(){
+            var a = document.createElement("a");
+            a.style.display = "none";
+            document.body.append(a);
+            a.href = canvas.toDataURL("image/png");
+            a.download = "download.png";
+            a.click();
+            a.remove();
+        });
+        mask.addEventListener("mousedown", function(){
+            moving = true;
+            cut_list = [];
+        });
+        mask.addEventListener("mousemove", function(e){
+            if(moving){
+                var o = offset(canvas);
+                console.log([e.pageX - o.x, e.pageY - o.y]);
+                cut_list.push([e.pageX - o.x, e.pageY - o.y]);
+                fresh();
+            }
+        });
+        window.addEventListener("mouseup", function(){
+            if(moving){
+                console.log(cut_list);
+                if(cut_list.length <= 0) return;
+                cut();
+                fresh();
+                moving = false;
+            }
+        });
+    </script>
+</body>
+</html>

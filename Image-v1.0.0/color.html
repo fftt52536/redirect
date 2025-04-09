@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        img, canvas{
+            display: block;
+            width: 400px;
+            height: 300px;
+        }
+        #resource{
+            display: none;
+        }
+        #file{
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <h3>图像换色</h3>
+    <p><a href="/">主页</a>|<a href="cut.html">抠图</a>|图像换色</p>
+    <div class="form">
+        <input type="file" id="file"/>
+        <button type="button" id="select">选择文件</button>
+    </div>
+    <div class="form">
+        <img src="" id="resource" />
+    </div>
+    <div class="form">
+        选择被替换的颜色：
+        <input type="color" value="#00ff00" id="fromColor" />
+    </div>
+    <div class="form">
+        选择替换后的颜色：
+        <input type="color" value="#ff0000" id="toColor" />
+    </div>
+    <div class="form">
+        选择替换敏感度：
+        <input type="range" value="15" id="mingan" min="10" max="30" />
+        <span id="out">15</span>
+    </div>
+    <div class="form">
+        <button type="button" id="transform">处理</button>
+    </div>
+    <div class="form">
+        <canvas id="output"></canvas>
+    </div>
+    <script>
+
+        function rgbToHsl(rgb) {
+            var r = rgb[0], g = rgb[1], b = rgb[2];
+            // 转换为0-1之间的数值
+            r /= 255;
+            g /= 255;
+            b /= 255;
+            
+            // 计算最大、最小颜色值
+            var max = Math.max(r, g, b), min = Math.min(r, g, b);
+            var h, s, l = (max + min) / 2;
+            
+            if (max === min) {
+                h = s = 0; //  achromatic
+            } else {
+                var d = max - min;
+                s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+            
+                switch (max) {
+                    case r: h = (g - b) / d + (g < b ? 6 : 0); break;
+                    case g: h = (b - r) / d + 2; break;
+                    case b: h = (r - g) / d + 4; break;
+                }
+          
+                h /= 6;
+            }
+        
+            // 修正HSL值
+            h = Math.round(h * 360);
+            s = Math.round(s * 100);
+            l = Math.round(l * 100);
+        
+            return [h, s, l];
+        }
+        function hexToRgb(hex) {
+            // 移除十六进制颜色中的'#'
+            hex = hex.replace(/^\s*#|\s*$/g, '');
+       
+            // 将三个双位数字转换为十进制
+            var r = parseInt(hex.substr(0, 2), 16);
+            var g = parseInt(hex.substr(2, 2), 16);
+            var b = parseInt(hex.substr(4, 2), 16);
+            return [r, g, b];
+        }
+        function hexToHsl(hex) {
+            // 移除十六进制颜色中的'#'
+            hex = hex.replace(/^\s*#|\s*$/g, '');
+       
+            // 将三个双位数字转换为十进制
+            var r = parseInt(hex.substr(0, 2), 16);
+            var g = parseInt(hex.substr(2, 2), 16);
+            var b = parseInt(hex.substr(4, 2), 16);
+            return rgbToHsl([r, g, b]);
+        }
+        function hslToRgb(n) {
+            var r, g, b;
+            var h = n[0] / 360, s = n[1] / 100, l = n[2] / 100;
+            function hue2Rgb(p, q, t) {
+                if (t < 0) t += 1;
+                if (t > 1) t -= 1;
+                if (t < 1/6) return p + (q - p) * 6 * t;
+                if (t < 1/2) return q;
+                if (t < 2/3) return p + (q - p) * (2/3 - t) * 6;
+                return p;
+            }
+ 
+            var q = l < 0.5 ? l * (1 + s) : l + s - l * s;
+            var p = 2 * l - q;
+            r = hue2Rgb(p, q, h + 1/3);
+            g = hue2Rgb(p, q, h);
+            b = hue2Rgb(p, q, h - 1/3);
+            
+            return [Math.round(r * 255), Math.round(g * 255), Math.round(b * 255)];
+        }
+        var canvas = document.getElementById("output"),
+            from = document.getElementById("fromColor"),
+            to = document.getElementById("toColor"),
+            button = document.getElementById("transform"),
+            resource = document.getElementById("resource"),
+            mingan = document.getElementById("mingan"),
+            out = document.getElementById("out"),
+            file = document.getElementById("file"),
+            select = document.getElementById("select");
+            
+        var c = canvas.getContext('2d', {willReadFrequently: true});
+        resource.addEventListener("load", function(){
+            c.clearRect(0, 0, canvas.width, canvas.height);
+            c.drawImage(resource,0,0, canvas.width, canvas.height);
+            if(resource.src) window.URL.revokeObjectURL(resource.src);
+        });
+        file.addEventListener("change", function(){
+            if(file.files && file.files.length > 0){
+                var blob = file.files[0];
+                resource.src = window.URL.createObjectURL(blob);
+                file.value = '';
+            }
+        });
+        button.addEventListener("click", function(){
+            translate(canvas, from.value || '#00ff00', to.value || '#ff0000', parseInt(mingan.value) || 15);
+        });
+        mingan.addEventListener("change", function(){
+            out.textContent = String(mingan.value || 15);
+        });
+        select.addEventListener("click", function(){
+            file.click();
+        });
+        function translate(canvas, f, t, m){
+            var frgb = hexToRgb(f), trgb = hexToRgb(t);
+            var fixH = (h) => {if(h < 0) h += 360;h %= 360;return h;};
+            var fixS = (s) => {if(s < 0) s = 0;if(s > 100) s = 100;return s};
+            var fixL = fixS;
+
+
+            function check([r, g, b]){
+
+                /*
+                var d1 = h - frgb[0];
+                //d1 = fixH(d1);
+
+
+                //var d2 = fixS(s - frgb[1] + trgb[1]);
+                
+                //var d3 = fixL(l - frgb[2] + trgb[2]);
+                
+                //var d2 = trgb[1] - s;
+                //d2 = fixS(d2);
+                //d2 = fixS(frgb[1] + d2 / (Math.abs(d1 * d2) + 1));
+
+                //var d3 = trgb[2] - l;
+                //d3 = fixL(d3);
+                //d3 = fixL(frgb[2] + d3 / (Math.abs(d1 * d3) + 1));
+                var d2 = s, d3 = l;
+
+                
+                d1 = fixH(trgb[0] + d1 / (Math.abs(d1) + 1));
+                */
+                var d1 = r, d2 = g, d3 = b;
+                var distance = Math.sqrt((d1-frgb[0])**2 + (d2-frgb[1])**2 + (d3-frgb[2])**2);
+                var z = 1 / (distance + 1);
+                var d = 1 - z;
+                d = d**m;
+                z = 1 - d;
+                d1 = trgb[0] * z + d1 * d;
+                d2 = trgb[1] * z + d2 * d;
+                d3 = trgb[2] * z + d3 * d;
+                
+                return [d1, d2, d3];
+            }
+
+
+            var imgData=c.getImageData(0,0,canvas.width,canvas.height);
+            // 反转颜色
+            for (var i=0;i<imgData.data.length;i+=4){
+                var [r, g, b] = check([imgData.data[i], imgData.data[i+1], imgData.data[i+2]]);
+                imgData.data[i]=r;
+                imgData.data[i+1]=g;
+                imgData.data[i+2]=b;
+            }
+            c.putImageData(imgData,0,0);
+
+        }
+    </script>
+</body>
+</html>

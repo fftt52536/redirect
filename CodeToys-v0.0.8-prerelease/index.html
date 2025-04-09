@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Code Toys - G9D</title>
+    <link rel="stylesheet" href="./base.css">
+    <link rel="stylesheet" href="./easymode.css" id="easymode">
+
+    <style>
+        html, body, .injection, .ct{
+            overflow: hidden;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Code Toys</h1>
+
+
+    <label style="cursor: pointer;">
+        <input type="checkbox" onchange="setEasyMode(document.getElementById('chk').checked)" id="chk" checked />
+        开启新手模式
+    </label>
+
+    <button id="save">保存</button>
+    <button id="load">导入</button>
+    <input style="display: none;" id="loader" type="file"/>
+
+    <br />
+
+
+    <div id="injection"
+        style="vertical-align: top; display: inline-block; width: 1100px; height: 500px; margin-left: 50px; overflow: hidden; resize: both;">
+    </div>
+
+    
+    <script src="./engine.js"></script>
+    <script src="./block.js"></script>
+    <script src="./input.js"></script>
+    <script src="./serialize.js"></script>
+    <script src="./deserialize.js"></script>
+
+
+
+    <script>
+        //Code Toys从此开始
+        var el = document.createElement("div");
+        var workspace = CodeToys(el, () => { });  //注入Code Toys
+        document.getElementById("injection").append(el);
+
+
+        //简洁模式
+        var easyMode = document.getElementById("easymode");
+        window.setEasyMode = function (bool) {
+            easyMode.disabled = !bool;
+            workspace.setPadding(bool ? 0 : 6);
+        }
+        window.setEasyMode(true);
+
+        //保存和导入
+        document.getElementById("save").onclick = function(){
+            var json = CodeToys.save(el);
+            var jstr = JSON.stringify(json, null, 4);
+            var name = "codetoys.ct";
+            var file = new File([jstr], name);
+            var a = document.createElement("a");
+            a.href = window.URL.createObjectURL(file);
+            a.download = name;
+            a.click();
+        }
+        document.getElementById("load").onclick = function(){
+            document.getElementById("loader").click();
+        }
+        document.getElementById("loader").onchange = function(e){
+            if(e.target.files && e.target.files[0]){
+                var read = new FileReader();
+                read.onload = function(){
+                    var json = JSON.parse(read.result);
+                    el.innerHTML = '';
+                    CodeToys.load(json, workspace);
+                };
+                read.readAsText(e.target.files[0]);
+            }
+        }
+        fetch("example.ct").then(r=>r.json()).then(function(j){
+            CodeToys.load(j, workspace);
+        }).catch(console.error);
+    </script>
+    <script>
+        //--------------------------------------
+
+
+        /*以下是测试代码：
+        
+        var tr = workspace.requestNewTree();
+        workspace.giveFront(tr);
+        workspace.setTreePos(tr, Math.random() * 600, Math.random() * 400);
+
+
+
+        CodeToys.blocks.forEach(function (b) {
+            if (b[3]) return;
+            CodeToys.addBlock(workspace, tr, b[0], b[1], false, b[2]);
+        });
+        CodeToys.addBlock(workspace, null, "operator_add", "%1+%2", false, false, true);
+        CodeToys.addBlock(workspace, null, "operator_minus", "%1-%2", false, false, true);
+        CodeToys.addBlock(workspace, null, "operator_times", "%1*%2", false, false, true);
+        CodeToys.addBlock(workspace, null, "operator_divide", "%1/%2", false, false, true);
+        CodeToys.addBlock(workspace, null, "operator_greater", "%1>%2?", false, false, true);
+        CodeToys.addBlock(workspace, null, "operator_less", "%1<"+"%2?", false, false, true);
+        CodeToys.addBlock(workspace, null, "operator_equal", "%1=%2?", false, false, true);
+        CodeToys.addBlock(workspace, null, "variables_custom", "我的变量", false, false, true);
+        CodeToys.addBlock(workspace, null, "looks_input", "等待用户输入，提示词%1", false, false, true);
+        */
+    </script>
+</body>
+
+</html>

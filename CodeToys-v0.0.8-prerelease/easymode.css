@@ -1,0 +1,17 @@
+.ct .tree{
+    padding: 0;
+    background-color: transparent;
+}
+
+
+.ct .tree.hover{
+    background-color: transparent;
+    outline: 5px solid #66ccff;
+}
+
+.ct .tree .folder{
+    display: none;
+}
+.ct .tree .folder:not(:checked)~.wrap{
+    display: block;
+}
