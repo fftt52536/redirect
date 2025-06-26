@@ -1,0 +1,10 @@
+.hover-only{
+    display: none;
+}
+.hover-only-trigger-inside:hover .hover-only, .hover-only-trigger-children:hover>.hover-only{
+    display: block;
+}
+.text-sm{
+    font-size: 75%;
+    font-weight: normal;
+}

@@ -5,12 +5,61 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>G9D 创意工作室</title>
     <link rel="stylesheet" href="./Styles/page.css">
+    <link rel="stylesheet" href="./bootstrap.min.css">
+    <link rel="stylesheet" href="./bootstrap.custom.css">
+    <script src="bootstrap.bundle.min.js"></script>
 </head>
 <body>
-    <h1 class="title">欢迎来到G9D</h1>
-    <div class="main">
-        <div class="section">
-            <h2 class="title"></h2>
+    <div class="container mt-5"> 
+        <h1 class="title">欢迎来到G9D</h1>
+        <div class="accordion" id="mainAccordion">
+            <!-- 项目1 -->
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="headingOne">
+                    <button class="accordion-button" type="button" data-bs-toggle="collapse" 
+                            data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                        最新产品
+                    </button>
+                </h2>
+                <div id="collapseOne" class="accordion-collapse collapse show" 
+                     aria-labelledby="headingOne" data-bs-parent="#mainAccordion">
+                    <div class="accordion-body">
+                        <div class="d-flex" id="pro_new"></div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 项目2 -->
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="headingTwo">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" 
+                            data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                        免费产品
+                    </button>
+                </h2>
+                <div id="collapseTwo" class="accordion-collapse collapse" 
+                     aria-labelledby="headingTwo" data-bs-parent="#mainAccordion">
+                    <div class="accordion-body">
+                        <div class="d-flex" id="pro_free"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 项目3 -->
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="headingThree">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" 
+                            data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                        团队风采
+                    </button>
+                </h2>
+                <div id="collapseThree" class="accordion-collapse collapse" 
+                     aria-labelledby="headingThree" data-bs-parent="#mainAccordion">
+                    <div class="accordion-body">
+                        <div class="d-flex" id="pro_team"></div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
     <div class="footer">
@@ -46,5 +95,7 @@
             </div>
         </div>
     </div>
+
+    <script src="./api.js"></script>
 </body>
 </html>

@@ -1,0 +1,18 @@
+{
+    "new": [
+        {
+            "name": "VOD私箱<span class='badge bg-warning'>可体验</span>",
+            "info": "VOD私箱是新一代无广告的企业化聊天平台。",
+            "src": "https://chat.g9d.site/",
+            "more": "立即体验！",
+            "hot": true
+        },
+        {
+            "name": "高仿Windows 10 UI",
+            "info": "作者闲来无事做的前端小示例，高仿制Win10。",
+            "src": "https://gitee.com/fftt52536/winui"
+        }
+    ],
+    "free": [],
+    "team": []
+}

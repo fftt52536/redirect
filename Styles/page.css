@@ -59,7 +59,7 @@ html, body{
     height: 300px;
     position: relative;
     background-image: linear-gradient(to bottom, #8decef, #7984fe);
-    margin-top: 500px;
+    margin-top: 100px;
 }
 
 .footer::before{
@@ -127,13 +127,15 @@ html, body{
 
 .footer .center{
     position: absolute;
-    left: 300px;
+    left: 50%;
+    transform: translateX(-50%);
 }
 
 .footer .beian{
     position: absolute;
     bottom: 20px;
-    left: 330px;
+    left: 50%;
+    transform: translateX(-50%);
     color: #cccccc;
     font-size: 12px;
 }
