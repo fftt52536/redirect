@@ -59,7 +59,7 @@ html, body{
     height: 300px;
     position: relative;
     background-image: linear-gradient(to bottom, #8decef, #7984fe);
-    margin-top: 50px;
+    margin-top: 150px;
 }
 
 .footer::before{
