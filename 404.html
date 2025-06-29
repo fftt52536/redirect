@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Oops...</title>
+    <link rel="stylesheet" href="/bootstrap.min.css" />
+    <link rel="stylesheet" href="/bootstrap.custom.css" />
+    <script src="/bootstrap.bundle.min.js"></script>
+</head>
+
+<body>
+    <div class="container">
+        <div class="alert bg-danger text-white">
+            <h1>Oh No!</h1>
+            <hr />
+            <p>您访问的网页<em class="text-lg">没</em>辣！</p>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <h5>404 Not Found</h5>
+            </div>
+            <div class="col-md-6">
+                <div class="btn-group">
+                    <a href="/" class="btn btn-primary">回到首页</a>
+                    <a href="/contact.html" class="btn btn-secondary">联系我们</a>
+                    <a href="/about.html" class="btn btn-secondary">关于我们</a>
+                </div>
+            </div>
+        </div>
+        <hr />
+        <h5>Learn More!</h5>
+        <p>
+            传闻，欧洲核子研究中心（CERN）早期网络系统的中央数据库位于“404号房间”，工作人员手动处理请求时，对失效文件返回“room
+            404: file not found”
+        </p>
+        <p>
+            实际考证表明，CERN
+            四楼并无编号404的房间，此说法属于技术发展过程中的浪漫化误解。
+        </p>
+        <p>
+            事实上，HTTP状态码以4xx表示客户端错误，并以5xx表示服务器端错误。更详细的编号对应的不同的错误原因。
+        </p>
+        <table class="table border">
+            <tr>
+                <td>400</td>
+                <td>格式/参数无效</td>
+            </tr>
+            <tr>
+                <td>401</td>
+                <td>未授权</td>
+            </tr>
+            <tr>
+                <td>403</td>
+                <td>禁止访问</td>
+            </tr>
+            <tr>
+                <td class="bg-info text-white">404</td>
+                <td class="bg-info text-white">未找到</td>
+            </tr>
+            <tr>
+                <td>429/451</td>
+                <td>请求无法及时相应</td>
+            </tr>
+            <tr>
+                <td>500</td>
+                <td>服务器内部错误</td>
+            </tr>
+            <tr>
+                <td>502</td>
+                <td>错误的网关</td>
+            </tr>
+            <tr>
+                <td>503</td>
+                <td>服务不可用</td>
+            </tr>
+        </table>
+        <p>你学废了吗？</p>
+    </div>
+</body>
+
+</html>
