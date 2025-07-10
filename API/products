@@ -8,11 +8,23 @@
             "hot": true
         },
         {
+            "name": "图像换色 - 试用版",
+            "info": "图像AI处理",
+            "src": "/Image-v1.0.0/color.html",
+            "more": "线上体验"
+        }
+    ],
+    "free": [
+        {
             "name": "高仿Windows 10 UI",
             "info": "作者闲来无事做的前端小示例，高仿制Win10。",
             "src": "https://gitee.com/fftt52536/winui"
+        },
+        {
+            "name": "Tree UI",
+            "info": "专门用于树形结构显示的小型UI",
+            "src": "https://gitee.com/fftt52536/tree-ui"
         }
     ],
-    "free": [],
     "team": []
 }
